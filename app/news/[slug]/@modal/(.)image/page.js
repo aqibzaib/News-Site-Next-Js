@@ -1,8 +1,11 @@
-import { DUMMY_NEWS } from "@/dummy-news";
-import { notFound } from "next/navigation";
+"use client";
 
-export default async function InterceptedImage({ params }) {
-  const { slug } = await params; // Await params in Next.js 15
+import { DUMMY_NEWS } from "@/dummy-news";
+import { notFound, useParams, useRouter } from "next/navigation";
+
+export default function InterceptedImage() {
+  const { slug } = useParams(); // Use useParams() in client components
+  const router = useRouter();
   const newsItem = DUMMY_NEWS.find((item) => item.slug === slug);
 
   if (!newsItem) {
@@ -11,7 +14,7 @@ export default async function InterceptedImage({ params }) {
 
   return (
     <>
-      <div className="modal-backdrop" />
+      <div className="modal-backdrop" onClick={router.back} />
       <dialog className="modal" open>
         <div className="fullscreen-image">
           <img src={`/images/news/${newsItem.image}`} alt={newsItem.title} />
